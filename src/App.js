@@ -1,25 +1,19 @@
-import logo from './logo.svg';
+// dependencies
+import React, {useState} from 'react';
 import './App.css';
+// myStuff
+import Header from './components/Header.js';
+import Posts from './components/Posts.js';
+import {dummyData} from './utils.js';
 
-function App() {
+const App = (props) => {
+  const [ posts, setPosts ] = useState(dummyData);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header/> 
+      <Posts posts = {posts}/>
     </div>
   );
-}
+};
 
 export default App;
