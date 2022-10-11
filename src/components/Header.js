@@ -1,10 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     return(
         <header className = 'App-header'>
             <ul className = 'container'>
-                <li>A Sample Blog Project</li>
+                <Link to={`/`}>
+                    <li>A Sample Blog Project</li>
+                </Link>
             </ul>
         </header>
     );
