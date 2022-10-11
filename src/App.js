@@ -1,19 +1,31 @@
 // dependencies
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './App.css';
 // myStuff
 import Header from './components/Header.js';
 import Posts from './components/Posts.js';
-import {dummyData} from './utils.js';
+import { dummyData } from './utils.js';
+import { 
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 const App = (props) => {
   const [ posts, setPosts ] = useState(dummyData);
   return (
-    <div className="App">
-      <Header/> 
-      <Posts posts = {posts}/>
-    </div>
+    <Router>
+      <div className="App">
+        <Header/>
+        <Routes>
+          <Route 
+            path = "/"
+            element = {<Posts posts = {posts}/>}
+          />
+        </Routes> 
+      </div>
+    </Router>
   );
 };
-
 export default App;
