@@ -4,6 +4,7 @@ import './App.css';
 // myStuff
 import Header from './components/Header.js';
 import Posts from './components/Posts.js';
+import Post from './components/Post.js';
 import { dummyData } from './utils.js';
 import { 
   BrowserRouter as Router,
@@ -20,8 +21,12 @@ const App = (props) => {
         <Header/>
         <Routes>
           <Route 
-            path = "/"
+            path = '/'
             element = {<Posts posts = {posts}/>}
+          />
+          <Route 
+            path = '/post/:postSlug'
+            element = {<Post posts = {posts} />}
           />
         </Routes> 
       </div>
