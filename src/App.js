@@ -6,6 +6,7 @@ import Header from './components/Header.js';
 import Posts from './components/Posts.js';
 import Post from './components/Post.js';
 import NotFound from './components/NotFound';
+import PostForm from './components/PostForm';
 import { dummyData } from './utils.js';
 import { 
   BrowserRouter as Router,
@@ -28,6 +29,10 @@ const App = () => {
           <Route 
             path = '/post/:postSlug'
             element = {<Post posts = {posts} />}
+          />
+          <Route 
+            path = '/new' 
+            element = {<PostForm />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes> 

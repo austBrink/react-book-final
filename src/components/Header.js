@@ -8,6 +8,9 @@ const Header = () => {
                 <Link to={`/`}>
                     <li>A Sample Blog Project</li>
                 </Link>
+                <li>
+                    <Link to="/new">New Post</Link>
+                </li>
             </ul>
         </header>
     );
