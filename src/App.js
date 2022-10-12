@@ -29,7 +29,7 @@ const App = () => {
             path = '/post/:postSlug'
             element = {<Post posts = {posts} />}
           />
-          <Route component = {<NotFound />}/>
+          <Route path="*" element={<NotFound />} />
         </Routes> 
       </div>
     </Router>
