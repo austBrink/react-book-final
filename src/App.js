@@ -5,6 +5,7 @@ import './App.css';
 import Header from './components/Header.js';
 import Posts from './components/Posts.js';
 import Post from './components/Post.js';
+import NotFound from './components/NotFound';
 import { dummyData } from './utils.js';
 import { 
   BrowserRouter as Router,
@@ -13,7 +14,7 @@ import {
   Redirect,
 } from "react-router-dom";
 
-const App = (props) => {
+const App = () => {
   const [ posts, setPosts ] = useState(dummyData);
   return (
     <Router>
@@ -28,6 +29,7 @@ const App = (props) => {
             path = '/post/:postSlug'
             element = {<Post posts = {posts} />}
           />
+          <Route component = {<NotFound />}/>
         </Routes> 
       </div>
     </Router>
