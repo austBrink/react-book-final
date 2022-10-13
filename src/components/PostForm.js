@@ -34,7 +34,20 @@ const PostForm = (props) => {
             />
         </p>
         <p>
-          <button type="submit">Save</button>
+          <label htmlFor = 'form-content'>Content:</label>
+        </p>
+        <Quill
+          onChange = {(content, delta, source, editor) => {
+            setPostData((pd) => {
+              return {...pd, content: editor.getContents()}
+            })
+          }} 
+        />
+        <p>
+          <button 
+            type="submit"
+            onClick = {(e) => {e.preventDefault(); console.log(postData.content.ops[0].insert);}}
+          >Save</button>
         </p>
       </form>
     );
