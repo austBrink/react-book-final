@@ -1,6 +1,6 @@
 import { react } from 'react';
 
-const Messages = ({ message }) => {
+const Message = ({ type }) => {
     const messages = {
         saved: 'Your post was Saved!',
         updated: 'Your post was Updated!',
@@ -9,10 +9,10 @@ const Messages = ({ message }) => {
     return(
         <div className = {`App-message ${type}`}>
             <p className = {'container'}> 
-                <strong>{messages[message]}</strong> 
+                <strong>{messages[type]}</strong> 
             </p>
         </div>
     );
 };
 
-export default Messages;
+export default Message;

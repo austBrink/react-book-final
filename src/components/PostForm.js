@@ -57,8 +57,8 @@ const PostForm = ({ addNewPost }) => {
           </p>
           <Quill
             onChange = {(content, delta, source, editor) => {
-              setPostData((pd) => {
-                return {...pd, content: editor.getContents()}
+              setPostData((ps) => {
+                return {...ps, content: editor.getContents()}
               })
             }} 
           />
