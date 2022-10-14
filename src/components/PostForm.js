@@ -35,7 +35,9 @@ const PostForm = ({ addNewPost }) => {
     addNewPost(post);
     setSaved(true);
   }
-    if (!saved) {
+    if (saved) {
+      return <Navigate to = '/' />;
+    } else {
       return (
         <form className="container"
           onSubmit = {handleNewPost}>
@@ -70,8 +72,6 @@ const PostForm = ({ addNewPost }) => {
         </form>
       );
     }
-    return <Navigate to = '/' />;
-    
   }
   
   export default PostForm;
