@@ -17,6 +17,16 @@ import {
 
 const App = () => {
   const [ posts, setPosts ] = useState(dummyData);
+
+  const addNewPost = (post) => {
+    post.id = post.length + 1;
+    post.slug = encodeURIComponent(
+      post.title.toLowerCase().split(" ").join("-")
+    );
+    setPosts((pState) => {return [...posts, post]});
+  }
+
+
   return (
     <Router>
       <div className="App">
@@ -32,7 +42,7 @@ const App = () => {
           />
           <Route 
             path = '/new' 
-            element = {<PostForm />}
+            element = {<PostForm addNewPost = {addNewPost}/>}
           />
           <Route path="*" element={<NotFound />} />
         </Routes> 
