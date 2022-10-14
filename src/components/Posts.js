@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 
 const Posts = ({posts}) => {
     return (
