@@ -56,6 +56,11 @@ const App = () => {
             path = '/new' 
             element = {<PostForm addNewPost = {addNewPost}/>}
           />
+          <Route 
+            path = '/edit:postSlug'
+            element = {<PostForm posts = {posts} />}
+
+          />
           <Route path="*" element={<NotFound />} />
         </Routes> 
       </div>

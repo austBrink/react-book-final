@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Quill from "react-quill";
 
 import 'react-quill/dist/quill.snow.css';
 
 const PostForm = ({ addNewPost }) => {
 
-  // decided on one object for form values....
+  const { existingPost } = useLocation().state;
+
+  console.log(existingPost);
+  
   const [ postData, setPostData ] = useState({
     title: '',
     content: '',
