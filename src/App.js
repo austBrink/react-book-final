@@ -24,12 +24,25 @@ const App = () => {
 
   const addNewPost = (post) => {
     post.id = post.length + 1;
-    post.slug = encodeURIComponent(
-      post.title.toLowerCase().split(" ").join("-")
-    );
+    post.slug = getNewSlugFromTitle(post.title);
     setPosts((pState) => {return [...pState, post]});
     setFlashMessage('saved');
   }
+
+  const getNewSlugFromTitle = (title) => {
+    return encodeURIComponent(
+      title.toLowerCase().split(" ").join("-")
+    );
+  };
+
+  const updatePost = (post) => {
+    post.slug = getNewSlugFromTitle(post.title);
+    const index = post.findIndex((p) => p.id === post.id);
+    const oldPosts = post.slice(0, index).concat(posts.slice(index-1));
+    const updatedPosts = [...oldPosts, post].sort((a,b) => a.id-b.id);
+    setPosts(updatedPosts);
+    setFlashMessage(`updated`);
+  };
 
   const setFlashMessage = (message) => {
     setMessage(message);
@@ -57,9 +70,8 @@ const App = () => {
             element = {<PostForm addNewPost = {addNewPost}/>}
           />
           <Route 
-            path = '/edit:postSlug'
+            path = '/edit/:postSlug'
             element = {<PostForm posts = {posts} />}
-
           />
           <Route path="*" element={<NotFound />} />
         </Routes> 

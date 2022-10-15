@@ -6,7 +6,6 @@ import NotFound from './NotFound';
 
 const Post = ({ posts }) => {
     
-    
     const { postSlug } = useParams();
     const post = posts.find(
         (post) => post.slug === postSlug
