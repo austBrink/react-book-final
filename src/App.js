@@ -35,6 +35,7 @@ const App = () => {
     );
   };
 
+  // the book claims this is a common js solution to modifying a particular element in an array. I suppose if it needs to stay sorted then yes? 
   const updatePost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
     const index = post.findIndex((p) => p.id === post.id);
@@ -65,13 +66,29 @@ const App = () => {
             path = '/post/:postSlug'
             element = {<Post posts = {posts} />}
           />
+          {/* To make the component logic simpler, always give it a post prop, even if its null. We'll be using it to 'update' as well */}
           <Route 
             path = '/new' 
-            element = {<PostForm addNewPost = {addNewPost}/>}
+            element = {
+              <PostForm 
+                addNewPost = {addNewPost}
+                post = {{
+                  id: 0,
+                  slug: '',
+                  title: '',
+                  content: ''
+                }}
+              />
+            }
           />
           <Route 
             path = '/edit/:postSlug'
-            element = {<PostForm posts = {posts} />}
+            element = {
+              <PostForm 
+                posts = {posts}
+                updatePost = {updatePost}
+              />
+            }
           />
           <Route path="*" element={<NotFound />} />
         </Routes> 

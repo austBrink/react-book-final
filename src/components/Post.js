@@ -11,6 +11,8 @@ const Post = ({ posts }) => {
         (post) => post.slug === postSlug
     );
 
+    post && console.log(post);
+
     const converter = new QuillDeltaToHtmlConverter(
         post.content.ops,
         {}
@@ -23,14 +25,19 @@ const Post = ({ posts }) => {
         );
     }
     
+    // Enable rendering if post content was not HTML convertible....
     return(
         <article className = 'post container'>
             <h1>{post.title}</h1>
-            <div
-                dangerouslySetInnerHTML={( () => ({
-                __html:  htmlContent
-                }))()}
+            {htmlContent 
+            ? <div
+            dangerouslySetInnerHTML={( () => ({
+            __html:  htmlContent
+            }))()}
             />
+            : post.content
+            }
+            
         </article>
     );
 };
