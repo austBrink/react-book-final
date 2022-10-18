@@ -7,17 +7,24 @@ import 'react-quill/dist/quill.snow.css';
 const PostForm = ({
   post:propsPost,
   addNewPost,
-  updatePost 
+  updatePost,
+  posts 
 }) => {
+
+  const { postSlug } = useParams();
+  const posty = posts.find(
+      (post) => post.slug === postSlug
+  );
+
+  posty && console.log(posty);
 
   // const { postSlug } = useParams();
   // const post = posts?.find(
   //   (post) => post.slug === postSlug
   // );
   // post && console.log(post);
-
   const [ post, setPost ] = useState({
-    ...propsPost
+    ...posty
   })
   const [ postData, setPostData ] = useState({
     title: '',
@@ -34,12 +41,12 @@ const PostForm = ({
   const quillRef = useRef();
   useEffect(() => {
     if(prevPost && quillRef.current) {
-      if(propsPost.id !== prevPost.id) {
-        setPost({...propsPost});
+      if(posty.id !== prevPost.id) {
+        setPost({...posty});
         quillRef.current.getEditor().setContents(``);
       }
     }
-  }, [prevPost, propsPost]);
+  }, [prevPost, posty]);
 
   const onChangeHandler = (e) => {
     const {name, value} = e.target;
@@ -61,7 +68,7 @@ const PostForm = ({
 
     if (updatePost) {
       addNewPost(post);
-      setSaved(true);``
+      setSaved(true);
       return;
     }
     updatePost(post);
