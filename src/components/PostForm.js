@@ -4,33 +4,28 @@ import Quill from "react-quill";
 
 import 'react-quill/dist/quill.snow.css';
 
-const PostForm = ({
-  post:propsPost,
-  addNewPost,
-  updatePost,
-  posts 
-}) => {
+const PostForm = (props) => {
 
-  const { postSlug } = useParams();
-  const posty = posts.find(
-      (post) => post.slug === postSlug
-  );
+  const { addNewPost, updatePost, posts, post:propsPost } = props;
 
-  posty && console.log(posty);
-
-  // const { postSlug } = useParams();
-  // const post = posts?.find(
-  //   (post) => post.slug === postSlug
-  // );
-  // post && console.log(post);
   const [ post, setPost ] = useState({
-    ...posty
-  })
-  const [ postData, setPostData ] = useState({
     title: '',
     content: '',
   });
   const [ saved, setSaved ] = useState(false);
+  let posty = {};
+  // logic for if this is an existing post! 
+  const { postSlug } = useParams();
+  if(!addNewPost) {
+    console.log('sdfh');
+    if (postSlug) {
+      posty = posts.find(
+          (post) => post.slug === postSlug
+      );
+    }
+  } else {
+    posty = propsPost;
+  }
 
   const prevPostRef = useRef();
   useEffect(() => {
@@ -40,9 +35,9 @@ const PostForm = ({
 
   const quillRef = useRef();
   useEffect(() => {
-    if(prevPost && quillRef.current) {
-      if(posty.id !== prevPost.id) {
-        setPost({...posty});
+    if (prevPost && quillRef.current) {
+      if (posty.id !== prevPost.id) {
+        setPost({ ...posty });
         quillRef.current.getEditor().setContents(``);
       }
     }
@@ -50,23 +45,22 @@ const PostForm = ({
 
   const onChangeHandler = (e) => {
     const {name, value} = e.target;
-    setPostData((prevState) => {
-      return {...prevState, [name]:value}
-    });
+    setPost({...post, [name]:value});
   };
 
   const handleNewPost = (e) => {
     e.preventDefault();
-    if(!postData.title){
+    if(!post.title){
       alert('Title is missing :(');
       return;
     }
-    const post = {
-      title: postData.title,
-      content: postData.content,
-    };
 
-    if (updatePost) {
+    // const post = {
+    //   title: postData.title,
+    //   content: postData.content,
+    // };
+
+    if (!updatePost) {
       addNewPost(post);
       setSaved(true);
       return;

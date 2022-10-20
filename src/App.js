@@ -78,6 +78,7 @@ const App = () => {
                   title: '',
                   content: ''
                 }}
+                posts = {posts}
               />
             }
           />
