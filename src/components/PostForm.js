@@ -43,6 +43,7 @@ const PostForm = (props) => {
     }
   }, [prevPost, posty]);
 
+
   const onChangeHandler = (e) => {
     const {name, value} = e.target;
     setPost({...post, [name]:value});
@@ -59,6 +60,8 @@ const PostForm = (props) => {
     //   title: postData.title,
     //   content: postData.content,
     // };
+
+    
 
     if (!updatePost) {
       addNewPost(post);
