@@ -46,8 +46,7 @@ const PostForm = (props) => {
     if (prevPost && quillRef.current) {
       if (posty.id !== prevPost.id) {
         setPost({ ...posty });
-        console.log('danger')
-        //quillRef.current.getEditor().setContents(``);
+        // quillRef.current.getEditor().setContents(``);
       }
     }
   }, [prevPost, posty]);

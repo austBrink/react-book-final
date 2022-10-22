@@ -11,8 +11,6 @@ const Post = ({ posts }) => {
         (post) => post.slug === postSlug
     );
 
-    post && console.log(post);
-
     const converter = new QuillDeltaToHtmlConverter(
         post.content.ops,
         {}
