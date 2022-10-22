@@ -23,7 +23,7 @@ const App = () => {
   const [ message, setMessage ] = useState(null);
 
   const addNewPost = (post) => {
-    post.id = post.length + 1;
+    post.id = posts.length + 1;
     post.slug = getNewSlugFromTitle(post.title);
     setPosts((pState) => {return [...pState, post]});
     setFlashMessage('saved');
@@ -38,8 +38,8 @@ const App = () => {
   // the book claims this is a common js solution to modifying a particular element in an array. I suppose if it needs to stay sorted then yes? 
   const updatePost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
-    const index = post.findIndex((p) => p.id === post.id);
-    const oldPosts = post.slice(0, index).concat(posts.slice(index-1));
+    const index = posts.findIndex((p) => p.id === post.id);
+    const oldPosts = posts.slice(0, index).concat(posts.slice(index + 1));
     const updatedPosts = [...oldPosts, post].sort((a,b) => a.id-b.id);
     setPosts(updatedPosts);
     setFlashMessage(`updated`);
