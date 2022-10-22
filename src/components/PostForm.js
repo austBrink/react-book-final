@@ -32,18 +32,22 @@ const PostForm = (props) => {
     }
   },[])
 
+  // getting data from props isn't so great when the /new post form is rendered. NEw post will think the loaded state of the post we're updating is its state. We need a way to compare states. 
+  // so! We'll useref. This only happens once. Not every time post is updated. 
   const prevPostRef = useRef();
   useEffect(() => {
     prevPostRef.current = post;
   },[]);
   const prevPost = prevPostRef.current;
 
+  // now! if posty updates we'll be able to compare posty wit hwhat was there previously.... That way if it's a new post we're after we can reflect that.
   const quillRef = useRef();
   useEffect(() => {
     if (prevPost && quillRef.current) {
       if (posty.id !== prevPost.id) {
         setPost({ ...posty });
-        quillRef.current.getEditor().setContents(``);
+        console.log('danger')
+        //quillRef.current.getEditor().setContents(``);
       }
     }
   }, [prevPost, posty]);
@@ -96,11 +100,10 @@ const PostForm = (props) => {
         </p>
         <Quill
           ref = {quillRef}
+          value = {post.content}
           defaultValue = {post.content}
           onChange = {(content, delta, source, editor) => {
-            setPost((ps) => {
-              return {...ps, content: editor.getContents()}
-            })
+            setPost({...post, content: editor.getContents()})
           }} 
         />
         <p>
