@@ -17,7 +17,6 @@ const PostForm = (props) => {
   // logic for if this is an existing post! 
   const { postSlug } = useParams();
   if(!addNewPost) {
-    console.log('sdfh');
     if (postSlug) {
       posty = posts.find(
           (post) => post.slug === postSlug
@@ -26,6 +25,12 @@ const PostForm = (props) => {
   } else {
     posty = propsPost;
   }
+
+  useEffect(()=>{
+    if(posty){
+      setPost(posty);
+    }
+  },[])
 
   const prevPostRef = useRef();
   useEffect(() => {
@@ -43,7 +48,6 @@ const PostForm = (props) => {
     }
   }, [prevPost, posty]);
 
-
   const onChangeHandler = (e) => {
     const {name, value} = e.target;
     setPost({...post, [name]:value});
@@ -60,8 +64,6 @@ const PostForm = (props) => {
     //   title: postData.title,
     //   content: postData.content,
     // };
-
-    
 
     if (!updatePost) {
       addNewPost(post);
