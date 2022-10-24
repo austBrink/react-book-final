@@ -15,11 +15,13 @@ import Post from './components/Post.js';
 import NotFound from './components/NotFound';
 import PostForm from './components/PostForm';
 import Message from './components/Message';
+import Login from './components/Login';
 import { dummyData } from './utils.js';
+import { useStorageState } from "react-storage-hooks";
 
 const App = () => {
 
-  const [ posts, setPosts ] = useState(dummyData);
+  const [posts, setPosts] = useStorageState(localStorage, `state-posts`, []);
   const [ message, setMessage ] = useState(null);
 
   const getNewSlugFromTitle = (title) => {
@@ -66,6 +68,11 @@ const App = () => {
         <Header/>
         { message && <Message type = {message}/> }
         <Routes>
+        <Route
+          exact
+          path="/login"
+          element={<Login />}
+        />
           <Route 
             path = '/'
             element = {<Posts posts = {posts} deletePost = {deletePost}/>}
