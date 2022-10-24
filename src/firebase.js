@@ -2,6 +2,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 
+
 const config = {
     apiKey: "AIzaSyAPjTVzOaa2f1PI__1erS-3J8QRHFALYaU",
     authDomain: "react-book-final.firebaseapp.com",
@@ -12,4 +13,7 @@ const config = {
 };
 
 firebase.initializeApp(config);
+console.log(firebase);
+console.log(firebase.onLog.auth);
+
 export default firebase;

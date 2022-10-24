@@ -16,6 +16,7 @@ import NotFound from './components/NotFound';
 import PostForm from './components/PostForm';
 import Message from './components/Message';
 import Login from './components/Login';
+import firebase from './firebase';
 import { dummyData } from './utils.js';
 import { useStorageState } from "react-storage-hooks";
 
@@ -23,6 +24,10 @@ const App = () => {
 
   const [posts, setPosts] = useStorageState(localStorage, `state-posts`, []);
   const [ message, setMessage ] = useState(null);
+
+  const onLogin = (email, password) => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then(user => console.log("Logged in")).catch(error => console.error(error))
+  };
 
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
@@ -71,7 +76,7 @@ const App = () => {
         <Route
           exact
           path="/login"
-          element={<Login />}
+          element={<Login onLogin = {onLogin} />}
         />
           <Route 
             path = '/'

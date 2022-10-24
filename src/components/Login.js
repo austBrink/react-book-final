@@ -1,6 +1,7 @@
 import react, {useState} from 'react';
 
 const Login = (props) => {
+    const {onLogin} = props;
     const initValues = {
         email: '',
         password: '',
@@ -10,6 +11,7 @@ const Login = (props) => {
     const handleLogin = (e) => {
         e.preventDefault();
         console.log(formValues);
+        onLogin(formValues.email, formValues.password);
     }
 
     const handleChange = (e) => {
@@ -38,7 +40,8 @@ const Login = (props) => {
             <p>
                 <button 
                     type = 'submit'
-                    disabled = {!formValues.email && !formValues.password}
+                    onClick = {handleLogin}
+                    //disabled = {!formValues.email && !formValues.password}
                 >
                     LOGIN
                 </button>
