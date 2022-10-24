@@ -16,10 +16,11 @@ import NotFound from './components/NotFound';
 import PostForm from './components/PostForm';
 import Message from './components/Message';
 import { dummyData } from './utils.js';
+import { useStorageState } from "react-storage-hooks";
 
 const App = () => {
 
-  const [ posts, setPosts ] = useState(dummyData);
+  const [posts, setPosts] = useStorageState(localStorage, `state-posts`, []);
   const [ message, setMessage ] = useState(null);
 
   const getNewSlugFromTitle = (title) => {
