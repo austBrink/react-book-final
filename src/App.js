@@ -16,6 +16,7 @@ import NotFound from './components/NotFound';
 import PostForm from './components/PostForm';
 import Message from './components/Message';
 import Login from './components/Login';
+import { onLogin } from './firebase';
 import { dummyData } from './utils.js';
 import { useStorageState } from "react-storage-hooks";
 
@@ -71,7 +72,7 @@ const App = () => {
         <Route
           exact
           path="/login"
-          element={<Login />}
+          element={<Login onLogin = {onLogin} />}
         />
           <Route 
             path = '/'
