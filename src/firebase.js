@@ -13,17 +13,7 @@ const config = {
 
 const app = initializeApp(config);
 
-const firebase = getAuth(app);
+export const firebase = getAuth(app);
+
 console.log(firebase);
 
-export const onLogin = (email, password, setUser) => {
-    signInWithEmailAndPassword(firebase, email, password)
-    .then((response) => {
-        console.log("Logged in")
-        setUser({
-            email: response.user['email'],
-            isAuthenticated: true,
-        })
-    })
-    .catch(error => console.error(error))
-};

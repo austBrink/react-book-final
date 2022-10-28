@@ -1,11 +1,13 @@
 // dependencies
 import React, { useState } from 'react';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import { 
   BrowserRouter as Router,
   Routes,
   Route,
   Redirect,
 } from "react-router-dom";
+import {firebase} from './firebase';
 
 // my stuff
 import './App.css';
@@ -56,7 +58,19 @@ const App = () => {
       setPosts(lessPosts);
       setFlashMessage(`deleted`);
     }
-  }
+  };
+
+  const onLogin = ( email, password ) => {
+    signInWithEmailAndPassword(firebase, email, password)
+    .then((response) => {
+        console.log("Logged in")
+        setUser({
+            email: response.user['email'],
+            isAuthenticated: true,
+        })
+    })
+    .catch(error => console.error(error))
+  };
 
   const setFlashMessage = (message) => {
     setMessage(message);
@@ -65,9 +79,9 @@ const App = () => {
     }, 1600);
   };
 
-  const userStateWrapper = (user) => {
-    setUser({...user});
-  }
+  // const userStateWrapper = (user) => {
+  //   setUser({...user});
+  // }
 
   return (
     <Router>
@@ -79,7 +93,7 @@ const App = () => {
           <Route
             exact
             path="/login"
-            element={<Login onLogin = {onLogin} setUser = {userStateWrapper}/>}
+            element={<Login onLogin = {onLogin} />}
           />
             <Route 
               path = '/'
