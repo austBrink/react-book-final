@@ -25,8 +25,8 @@ import { useStorageState } from "react-storage-hooks";
 
 const App = () => {
 
-  const [posts, setPosts] = useStorageState(localStorage, `state-posts`, []);
-  const [user, setUser] = useStorageState(localStorage, "state-user", {});
+  const [ posts, setPosts ] = useStorageState(localStorage, `state-posts`, []);
+  const [ user, setUser ] = useStorageState(localStorage, "state-user", {});
   const [ message, setMessage ] = useState(null);
 
   const getNewSlugFromTitle = (title) => {
