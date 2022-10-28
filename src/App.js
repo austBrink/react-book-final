@@ -9,6 +9,7 @@ import {
 
 // my stuff
 import './App.css';
+import UserContext from './context/UserContext';
 import Header from './components/Header.js';
 import Posts from './components/Posts.js';
 import Post from './components/Post.js';
@@ -70,51 +71,53 @@ const App = () => {
 
   return (
     <Router>
-      <div className="App">
-        <Header/>
-        { message && <Message type = {message}/> }
-        <Routes>
-        <Route
-          exact
-          path="/login"
-          element={<Login onLogin = {onLogin} setUser = {userStateWrapper}/>}
-        />
-          <Route 
-            path = '/'
-            element = {<Posts posts = {posts} deletePost = {deletePost}/>}
+      <UserContext.Provider value = {{user, onLogin}}>
+        <div className="App">
+          <Header/>
+          { message && <Message type = {message}/> }
+          <Routes>
+          <Route
+            exact
+            path="/login"
+            element={<Login onLogin = {onLogin} setUser = {userStateWrapper}/>}
           />
-          <Route 
-            path = '/post/:postSlug'
-            element = {<Post posts = {posts}/>}
-          />
-          {/* To make the component logic simpler, always give it a post prop, even if its null. We'll be using it to 'update' as well */}
-          <Route 
-            path = '/new' 
-            element = {
-              <PostForm 
-                addNewPost = {addNewPost}
-                post = {{
-                  id: 0,
-                  slug: '',
-                  title: '',
-                  content: ''
-                }}
-                posts = {posts}
-              />
-            }
-          />
-          <Route 
-            path = '/edit/:postSlug'
-            element = {
-              <PostForm 
-                posts = {posts}
-                updatePost = {updatePost}
-              />
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes> 
-      </div>
+            <Route 
+              path = '/'
+              element = {<Posts posts = {posts} deletePost = {deletePost}/>}
+            />
+            <Route 
+              path = '/post/:postSlug'
+              element = {<Post posts = {posts}/>}
+            />
+            {/* To make the component logic simpler, always give it a post prop, even if its null. We'll be using it to 'update' as well */}
+            <Route 
+              path = '/new' 
+              element = {
+                <PostForm 
+                  addNewPost = {addNewPost}
+                  post = {{
+                    id: 0,
+                    slug: '',
+                    title: '',
+                    content: ''
+                  }}
+                  posts = {posts}
+                />
+              }
+            />
+            <Route 
+              path = '/edit/:postSlug'
+              element = {
+                <PostForm 
+                  posts = {posts}
+                  updatePost = {updatePost}
+                />
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes> 
+        </div>
+      </UserContext.Provider>
     </Router>
   );
 };
