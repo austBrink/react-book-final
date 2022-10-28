@@ -1,7 +1,7 @@
-import react, {useState} from 'react';
+import {useState} from 'react';
 
 const Login = (props) => {
-    const {onLogin} = props;
+    const {onLogin, setUser} = props;
     const initValues = {
         email: '',
         password: '',
@@ -11,7 +11,7 @@ const Login = (props) => {
     const handleLogin = (e) => {
         e.preventDefault();
         console.log(formValues);
-        onLogin(formValues.email, formValues.password);
+        onLogin(formValues.email, formValues.password, setUser);
     }
 
     const handleChange = (e) => {

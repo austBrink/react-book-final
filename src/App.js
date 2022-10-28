@@ -23,6 +23,7 @@ import { useStorageState } from "react-storage-hooks";
 const App = () => {
 
   const [posts, setPosts] = useStorageState(localStorage, `state-posts`, []);
+  const [user, setUser] = useStorageState(localStorage, "state-user", {});
   const [ message, setMessage ] = useState(null);
 
   const getNewSlugFromTitle = (title) => {
@@ -63,6 +64,10 @@ const App = () => {
     }, 1600);
   };
 
+  const userStateWrapper = (user) => {
+    setUser({...user});
+  }
+
   return (
     <Router>
       <div className="App">
@@ -72,7 +77,7 @@ const App = () => {
         <Route
           exact
           path="/login"
-          element={<Login onLogin = {onLogin} />}
+          element={<Login onLogin = {onLogin} setUser = {userStateWrapper}/>}
         />
           <Route 
             path = '/'
