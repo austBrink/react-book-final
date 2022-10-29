@@ -1,7 +1,8 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
+import UserContext from '../context/UserContext';
 
 const Login = (props) => {
-    const {onLogin} = props;
+    const {onLogin} = useContext(UserContext);
     const initValues = {
         email: '',
         password: '',

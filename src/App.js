@@ -85,7 +85,7 @@ const App = () => {
 
   return (
     <Router>
-      <UserContext.Provider value = {{user, onLogin}}>
+      <UserContext.Provider value = {{ user, onLogin }}>
         <div className="App">
           <Header/>
           { message && <Message type = {message}/> }
@@ -93,7 +93,7 @@ const App = () => {
           <Route
             exact
             path="/login"
-            element={<Login onLogin = {onLogin} />}
+            element={<Login />}
           />
             <Route 
               path = '/'

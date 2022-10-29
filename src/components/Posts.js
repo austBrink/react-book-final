@@ -1,7 +1,12 @@
-import React from "react";
+import react, {useContext} from "react";
 import { Link } from "react-router-dom";
 
+// now import the context object you created.... The provider is elsewhere, usually app.js
+import UserContext from "../context/UserContext";
+
 const Posts = ( {posts, deletePost} ) => {
+    // user is part of the value in app.js passed to context in provider.
+    const { user } = useContext(UserContext);
     return (
         <article className = 'posts container'>
             <h1>
@@ -16,14 +21,14 @@ const Posts = ( {posts, deletePost} ) => {
                         <h2>
                             <Link to = {`/post/${p.slug}`}>{p.title}</Link>
                         </h2>
-                        <p>
+                        {user?.isAuthenticated && <p>
                             <Link to = {`/edit/${p.slug}`}>edit</Link>
                             {" | "}
                             <button
                                 className="linkLike"
                                 onClick={() => deletePost(p)}
                             >Delete</button>
-                        </p>
+                        </p>}
                     </li>
                 ))}
             </ul>

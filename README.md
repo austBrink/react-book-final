@@ -1,3 +1,7 @@
+## MEMOS
+The changes and updates that would be used later were dropped without explanation. Like the context with value prop that contained 'onLogin' We used it later but initially we wrote it without knowing.
+Obvsiouly as mentioned, the react router is out of date as well as firebase.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
