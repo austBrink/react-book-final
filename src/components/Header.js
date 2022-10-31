@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 const Header = () => {
-    /**@todo confirm that we want onLogout from the context. Why did we pass it onLogin? */
-    // odd to me he introduced logout to be used later without saying so.
-    const { user } = useContext(UserContext); 
+    /**@todo discuss confirmation that we want onLogout from the context. Why did we pass it onLogin? HE introduced this with no explanation... */
+    const { user, onLogout } = useContext(UserContext); 
     return(
         <header className = 'App-header'>
             <ul className = 'container'>
@@ -14,9 +13,23 @@ const Header = () => {
                 </Link>
                 { user?.isAuthenticated 
                     ?
-                    <li>
-                        <Link to="/new">New Post</Link>
-                    </li>
+                    <>
+                        <li>
+                            <Link to="/new">New Post</Link>
+                        </li>
+                        <li>
+                        <button
+                          className = "linkLike"
+                          style = {{backgroundColor: 'unset'}}
+                          onClick = {(event) => {
+                            event.preventDefault();
+                            onLogout();
+                          }}
+                        >
+                          Logout
+                        </button>
+                        </li>
+                    </>
                     :
                     <li>
                         <Link to="/login">Login</Link>

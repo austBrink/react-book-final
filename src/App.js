@@ -1,6 +1,12 @@
 // dependencies
 import React, { useState } from 'react';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut
+} from 'firebase/auth';
+
 import { 
   BrowserRouter as Router,
   Routes,
@@ -19,8 +25,6 @@ import NotFound from './components/NotFound';
 import PostForm from './components/PostForm';
 import Message from './components/Message';
 import Login from './components/Login';
-import { onLogin } from './firebase';
-import { dummyData } from './utils.js';
 import { useStorageState } from "react-storage-hooks";
 
 const App = () => {
@@ -42,7 +46,7 @@ const App = () => {
     setFlashMessage('saved');
   }
 
-  // the book claims this is a common js solution to modifying a particular element in an array. I suppose if it needs to stay sorted then yes? 
+  // The book claims this is a common js solution to modifying a particular element in an array. I suppose if it needs to stay sorted then yes? 
   const updatePost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
     const index = posts.findIndex((p) => p.id === post.id);
@@ -63,13 +67,21 @@ const App = () => {
   const onLogin = ( email, password ) => {
     signInWithEmailAndPassword(firebase, email, password)
     .then((response) => {
-        console.log("Logged in")
         setUser({
             email: response.user['email'],
             isAuthenticated: true,
         })
     })
     .catch(error => console.error(error))
+  };
+
+  const onLogout = ( email, password ) => {
+    signOut(firebase, email, password)
+    .then((response) => {
+      setUser({
+        isAuthenticated: false
+      })
+    }).catch((error) => {console.error(error)});
   };
 
   const setFlashMessage = (message) => {
@@ -85,7 +97,7 @@ const App = () => {
 
   return (
     <Router>
-      <UserContext.Provider value = {{ user, onLogin }}>
+      <UserContext.Provider value = {{ user, onLogin, onLogout }}>
         <div className="App">
           <Header/>
           { message && <Message type = {message}/> }
@@ -107,6 +119,7 @@ const App = () => {
             <Route 
               path = '/new' 
               element = {
+                user?.isAuthenticated ? 
                 <PostForm 
                   addNewPost = {addNewPost}
                   post = {{
@@ -117,15 +130,18 @@ const App = () => {
                   }}
                   posts = {posts}
                 />
+                : <Navigate to = "/login" replace />
               }
             />
             <Route 
               path = '/edit/:postSlug'
               element = {
+                user?.isAuthenticated ?
                 <PostForm 
                   posts = {posts}
                   updatePost = {updatePost}
                 />
+                : <Navigate to = '/login' replace />
               }
             />
             <Route path="*" element={<NotFound />} />
