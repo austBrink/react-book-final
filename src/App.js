@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Redirect,
+  Navigate,
 } from "react-router-dom";
 import {firebase} from './firebase';
 
@@ -93,7 +93,7 @@ const App = () => {
           <Route
             exact
             path="/login"
-            element={<Login />}
+            element={!user?.isAuthenticated ? <Login /> : <Navigate to = {'/'} replace/>}
           />
             <Route 
               path = '/'
