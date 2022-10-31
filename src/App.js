@@ -1,14 +1,17 @@
 // dependencies
 import React, { useState } from 'react';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import { 
   BrowserRouter as Router,
   Routes,
   Route,
-  Redirect,
+  Navigate,
 } from "react-router-dom";
+import {firebase} from './firebase';
 
 // my stuff
 import './App.css';
+import UserContext from './context/UserContext';
 import Header from './components/Header.js';
 import Posts from './components/Posts.js';
 import Post from './components/Post.js';
@@ -22,7 +25,8 @@ import { useStorageState } from "react-storage-hooks";
 
 const App = () => {
 
-  const [posts, setPosts] = useStorageState(localStorage, `state-posts`, []);
+  const [ posts, setPosts ] = useStorageState(localStorage, `state-posts`, []);
+  const [ user, setUser ] = useStorageState(localStorage, "state-user", {});
   const [ message, setMessage ] = useState(null);
 
   const getNewSlugFromTitle = (title) => {
@@ -54,7 +58,19 @@ const App = () => {
       setPosts(lessPosts);
       setFlashMessage(`deleted`);
     }
-  }
+  };
+
+  const onLogin = ( email, password ) => {
+    signInWithEmailAndPassword(firebase, email, password)
+    .then((response) => {
+        console.log("Logged in")
+        setUser({
+            email: response.user['email'],
+            isAuthenticated: true,
+        })
+    })
+    .catch(error => console.error(error))
+  };
 
   const setFlashMessage = (message) => {
     setMessage(message);
@@ -63,53 +79,59 @@ const App = () => {
     }, 1600);
   };
 
+  // const userStateWrapper = (user) => {
+  //   setUser({...user});
+  // }
+
   return (
     <Router>
-      <div className="App">
-        <Header/>
-        { message && <Message type = {message}/> }
-        <Routes>
-        <Route
-          exact
-          path="/login"
-          element={<Login onLogin = {onLogin} />}
-        />
-          <Route 
-            path = '/'
-            element = {<Posts posts = {posts} deletePost = {deletePost}/>}
+      <UserContext.Provider value = {{ user, onLogin }}>
+        <div className="App">
+          <Header/>
+          { message && <Message type = {message}/> }
+          <Routes>
+          <Route
+            exact
+            path="/login"
+            element={!user?.isAuthenticated ? <Login /> : <Navigate to = {'/'} replace/>}
           />
-          <Route 
-            path = '/post/:postSlug'
-            element = {<Post posts = {posts}/>}
-          />
-          {/* To make the component logic simpler, always give it a post prop, even if its null. We'll be using it to 'update' as well */}
-          <Route 
-            path = '/new' 
-            element = {
-              <PostForm 
-                addNewPost = {addNewPost}
-                post = {{
-                  id: 0,
-                  slug: '',
-                  title: '',
-                  content: ''
-                }}
-                posts = {posts}
-              />
-            }
-          />
-          <Route 
-            path = '/edit/:postSlug'
-            element = {
-              <PostForm 
-                posts = {posts}
-                updatePost = {updatePost}
-              />
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes> 
-      </div>
+            <Route 
+              path = '/'
+              element = {<Posts posts = {posts} deletePost = {deletePost}/>}
+            />
+            <Route 
+              path = '/post/:postSlug'
+              element = {<Post posts = {posts}/>}
+            />
+            {/* To make the component logic simpler, always give it a post prop, even if its null. We'll be using it to 'update' as well */}
+            <Route 
+              path = '/new' 
+              element = {
+                <PostForm 
+                  addNewPost = {addNewPost}
+                  post = {{
+                    id: 0,
+                    slug: '',
+                    title: '',
+                    content: ''
+                  }}
+                  posts = {posts}
+                />
+              }
+            />
+            <Route 
+              path = '/edit/:postSlug'
+              element = {
+                <PostForm 
+                  posts = {posts}
+                  updatePost = {updatePost}
+                />
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes> 
+        </div>
+      </UserContext.Provider>
     </Router>
   );
 };

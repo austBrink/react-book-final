@@ -13,9 +13,7 @@ const config = {
 
 const app = initializeApp(config);
 
-const firebase = getAuth(app);
+export const firebase = getAuth(app);
+
 console.log(firebase);
 
-export const onLogin = (email, password) => {
-    signInWithEmailAndPassword(firebase, email, password).then(user => console.log("Logged in")).catch(error => console.error(error))
-};
