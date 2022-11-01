@@ -1,5 +1,5 @@
 // dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   getAuth,
@@ -40,11 +40,12 @@ const App = () => {
   };
 
   const addNewPost = (post) => {
-    post.id = posts.length + 1;
+    const postsRef = firebase.database().ref("posts");
     post.slug = getNewSlugFromTitle(post.title);
-    setPosts((pState) => {return [...pState, post]});
+    delete post.key;
+    postsRef.push(post);
     setFlashMessage('saved');
-  }
+  };
 
   // The book claims this is a common js solution to modifying a particular element in an array. I suppose if it needs to stay sorted then yes? 
   const updatePost = (post) => {
