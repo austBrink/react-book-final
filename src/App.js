@@ -46,6 +46,7 @@ const App = () => {
       const posts = snapshot.val();
       console.log(posts);
       const newStatePosts = [];
+      // post is the firebase create key from when we used push()
       for (let post in posts) {
         newStatePosts.push({
           key: post,
@@ -57,7 +58,7 @@ const App = () => {
       console.log(newStatePosts);
       setPosts(newStatePosts);
     });
-  }, []);
+  }, [setPosts]);
 
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
