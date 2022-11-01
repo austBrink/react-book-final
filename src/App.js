@@ -7,6 +7,13 @@ import {
   signOut
 } from 'firebase/auth';
 
+import {
+  ref,
+  onValue,
+  set,
+  push
+} from "firebase/database";
+
 import { 
   BrowserRouter as Router,
   Routes,
@@ -34,22 +41,23 @@ const App = () => {
   const [ message, setMessage ] = useState(null);
 
   useEffect(() => {
-    console.log(database);
-    // const postsRef = firebase.database().ref("posts");
-    // postsRef.on("value", (snapshot) => {
-    //   const posts = snapshot.val();
-    //   const newStatePosts = [];
-    //   for (let post in posts) {
-    //     newStatePosts.push({
-    //       key: post,
-    //       slug: posts[post].slug,
-    //       title: posts[post].title,
-    //       content: posts[post].content,
-    //     });
-    //   }
-    //   setPosts(newStatePosts);
-    // });
-  });
+    const postsRef = ref(database, "posts");
+    onValue(postsRef, (snapshot) => {
+      const posts = snapshot.val();
+      console.log(posts);
+      const newStatePosts = [];
+      for (let post in posts) {
+        newStatePosts.push({
+          key: post,
+          slug: posts[post].slug,
+          title: posts[post].title,
+          content: posts[post].content,
+        });
+      }
+      console.log(newStatePosts);
+      setPosts(newStatePosts);
+    });
+  }, []);
 
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
@@ -58,10 +66,9 @@ const App = () => {
   };
 
   const addNewPost = (post) => {
-    const postsRef = firebase.database().ref("posts");
     post.slug = getNewSlugFromTitle(post.title);
-    delete post.key;
-    postsRef.push(post);
+    // delete post.key;
+    push(ref(database, "posts/"), post);
     setFlashMessage('saved');
   };
 

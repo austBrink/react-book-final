@@ -17,7 +17,7 @@ const Posts = ( {posts, deletePost} ) => {
                     <li key='empty'>no posts</li>
                 )}
                 {posts.map(p =>(
-                    <li key = {p.id}>
+                    <li key = {p.key}>
                         <h2>
                             <Link to = {`/post/${p.slug}`}>{p.title}</Link>
                         </h2>
