@@ -1,5 +1,5 @@
 // dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   getAuth,
@@ -7,13 +7,20 @@ import {
   signOut
 } from 'firebase/auth';
 
+import {
+  ref,
+  onValue,
+  set,
+  push
+} from "firebase/database";
+
 import { 
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import {firebase} from './firebase';
+import { firebase, database } from './firebase';
 
 // my stuff
 import './App.css';
@@ -33,6 +40,26 @@ const App = () => {
   const [ user, setUser ] = useStorageState(localStorage, "state-user", {});
   const [ message, setMessage ] = useState(null);
 
+  useEffect(() => {
+    const postsRef = ref(database, "posts");
+    onValue(postsRef, (snapshot) => {
+      const posts = snapshot.val();
+      console.log(posts);
+      const newStatePosts = [];
+      // post is the firebase create key from when we used push()
+      for (let post in posts) {
+        newStatePosts.push({
+          key: post,
+          slug: posts[post].slug,
+          title: posts[post].title,
+          content: posts[post].content,
+        });
+      }
+      console.log(newStatePosts);
+      setPosts(newStatePosts);
+    });
+  }, [setPosts]);
+
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
       title.toLowerCase().split(" ").join("-")
@@ -40,11 +67,11 @@ const App = () => {
   };
 
   const addNewPost = (post) => {
-    post.id = posts.length + 1;
     post.slug = getNewSlugFromTitle(post.title);
-    setPosts((pState) => {return [...pState, post]});
+    delete post.key;
+    push(ref(database, "posts/"), post);
     setFlashMessage('saved');
-  }
+  };
 
   // The book claims this is a common js solution to modifying a particular element in an array. I suppose if it needs to stay sorted then yes? 
   const updatePost = (post) => {
@@ -123,7 +150,7 @@ const App = () => {
                 <PostForm 
                   addNewPost = {addNewPost}
                   post = {{
-                    id: 0,
+                    id: null,
                     slug: '',
                     title: '',
                     content: ''

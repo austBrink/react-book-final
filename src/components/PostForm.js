@@ -44,7 +44,7 @@ const PostForm = (props) => {
   const quillRef = useRef();
   useEffect(() => {
     if (prevPost && quillRef.current) {
-      if (posty.id !== prevPost.id) {
+      if (posty.key !== prevPost.key) {
         setPost({ ...posty });
         // quillRef.current.getEditor().setContents(``);
       }
