@@ -67,7 +67,7 @@ const App = () => {
 
   const addNewPost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
-    // delete post.key;
+    delete post.key;
     push(ref(database, "posts/"), post);
     setFlashMessage('saved');
   };
