@@ -123,7 +123,7 @@ const App = () => {
                 <PostForm 
                   addNewPost = {addNewPost}
                   post = {{
-                    id: 0,
+                    id: null,
                     slug: '',
                     title: '',
                     content: ''
