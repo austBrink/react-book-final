@@ -13,7 +13,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import {firebase} from './firebase';
+import { firebase, database } from './firebase';
 
 // my stuff
 import './App.css';
@@ -32,6 +32,24 @@ const App = () => {
   const [ posts, setPosts ] = useStorageState(localStorage, `state-posts`, []);
   const [ user, setUser ] = useStorageState(localStorage, "state-user", {});
   const [ message, setMessage ] = useState(null);
+
+  useEffect(() => {
+    console.log(database);
+    // const postsRef = firebase.database().ref("posts");
+    // postsRef.on("value", (snapshot) => {
+    //   const posts = snapshot.val();
+    //   const newStatePosts = [];
+    //   for (let post in posts) {
+    //     newStatePosts.push({
+    //       key: post,
+    //       slug: posts[post].slug,
+    //       title: posts[post].title,
+    //       content: posts[post].content,
+    //     });
+    //   }
+    //   setPosts(newStatePosts);
+    // });
+  });
 
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
