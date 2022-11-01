@@ -2,6 +2,8 @@
 The changes and updates that would be used later were dropped without explanation. Like the context with value prop that contained 'onLogin' We used it later but initially we wrote it without knowing.
 Obvsiouly as mentioned, the react router is out of date as well as firebase.
 
+Additionally, he's using web version 8 (namespaced) for firebase and I ran into webpack errors using that. I've had to follow firebase docs and change everything to module.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
