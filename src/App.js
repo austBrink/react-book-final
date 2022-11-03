@@ -11,7 +11,8 @@ import {
   ref,
   onValue,
   set,
-  push
+  push,
+  remove
 } from "firebase/database";
 
 import { 
@@ -69,25 +70,40 @@ const App = () => {
   const addNewPost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
     delete post.key;
-    push(ref(database, "posts/"), post);
-    setFlashMessage('saved');
+    push(ref(database, "posts/"),
+      post
+    ).then(() => {
+      setFlashMessage(`saved`);
+    })
+    .catch((error) => {
+      // The write failed...
+    });
   };
 
-  // The book claims this is a common js solution to modifying a particular element in an array. I suppose if it needs to stay sorted then yes? 
   const updatePost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
-    const index = posts.findIndex((p) => p.id === post.id);
-    const oldPosts = posts.slice(0, index).concat(posts.slice(index + 1));
-    const updatedPosts = [...oldPosts, post].sort((a,b) => a.id-b.id);
-    setPosts(updatedPosts);
-    setFlashMessage(`updated`);
+    set(ref(database, 'posts/' + post.key), {
+      slug: post.slug,
+      title: post.title,
+      content: post.content
+    })
+    .then(() => {
+      setFlashMessage(`updated`);
+    })
+    .catch((error) => {
+      // The write failed...
+    });
   };
 
   const deletePost = (post) => {
     if(window.confirm('Are you sure you want to delete this post?')){
-      const lessPosts = posts.filter((p) => p.id !== post.id);
-      setPosts(lessPosts);
-      setFlashMessage(`deleted`);
+      remove(ref(database, 'posts/' + post.key))
+      .then(() => {
+        setFlashMessage(`deleted`);
+      })
+      .catch((error) => {
+        // The write failed...
+      });
     }
   };
 
