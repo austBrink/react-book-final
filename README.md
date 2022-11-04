@@ -9,7 +9,7 @@ Additionally, he's using web version 8 (namespaced) for firebase and I ran into 
 
 ## Scripts
 
-In the top level directory run, `npm run sDev` for a custom [react scripts start](https://blog.logrocket.com/everything-you-need-know-about-react-scripts/). This custom script employs `env-cmd` to force the particular .env defined in package.json scripts. `sDev` starts the development environment using .env.development.local.
+In the top level directory run, `npm run sDev` for a custom [react scripts start](https://blog.logrocket.com/everything-you-need-know-about-react-scripts/). This custom script employs `env-cmd` to force the particular .env defined in package.json scripts. `npm run sDev` starts the development environment using .env.development.local.
 
 _Similarly_, use `npm run bDev` to build the project using the development environment. This bundles the project in servable build files in the `./build` directory.
 
@@ -17,4 +17,4 @@ _Similarly_, use `npm run bDev` to build the project using the development envir
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-While the initial react-app boiler-plate comes with testing and scripts I've paired things down to whats needed. If you want to learn more about react and it's defaults checkout their official [docs](https://reactjs.org/docs/getting-started.html).
+While the initial react-app boiler-plate comes with testing and scripts I've pared things down to whats needed. If you want to learn more about react and it's defaults checkout their official [docs](https://reactjs.org/docs/getting-started.html).
