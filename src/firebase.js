@@ -2,14 +2,13 @@ import {initializeApp} from 'firebase/app';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 
-
 const config = {
-    apiKey: "AIzaSyAPjTVzOaa2f1PI__1erS-3J8QRHFALYaU",
-    authDomain: "react-book-final.firebaseapp.com",
-    projectId: "react-book-final",
-    storageBucket: "react-book-final.appspot.com",
-    messagingSenderId: "207316138991",
-    appId: "1:207316138991:web:6f6b4cddd4d9c44fc1941a"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 const app = initializeApp(config);
