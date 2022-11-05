@@ -6,7 +6,7 @@ This Simple Blog is a micro blog template that presents posts in a simple list f
 A header option to login allows an admin user / owner to create, edit, and delete posts.
 
 ## Project Objective
-The aim of this project was to complete a react course I had started, while targeting core concepts I needed to review like `Context` and `Routing`. Additionally, I obtained familiarity with firebase authentication and live database. As a result of completing this assignment, the 'micro blog' final product makes a great template to build off of.
+The aim of this project was to complete a react course I had started, while targeting core concepts I needed to review like `Context` and `React Router`. Additionally, I obtained familiarity with firebase authentication and live database. As a result of completing this assignment, the 'micro blog' final product makes a great template to build off of.
 
 ## Get Set Up
 To use this as a base template of your own micro blog, clone this repository. The admin / owner user(s) that have access to altering posts are authenticated via Firebase. You will need your own developer credentials to do that. Get set up with Google's [Firebase](https://firebase.google.com/).
@@ -46,7 +46,7 @@ const config = {
 Before you are able to run any scripts to start the app in local host (or otherwise) you'll need to run `npm i env-cmd` (see below).
 
 ## Scripts
-Once you have installed the `env-cmd` package,run `npm run sDev` for a custom [react scripts start](https://blog.logrocket.com/everything-you-need-know-about-react-scripts/). This custom script employs `env-cmd` to force the particular .env in the package.json scripts. `sDev` starts the development environment using .env.development.local.
+Once you have installed the `env-cmd` package, run `npm run sDev` for a custom [react scripts start](https://blog.logrocket.com/everything-you-need-know-about-react-scripts/). This custom script employs `env-cmd` to force the particular .env in the package.json scripts. `sDev` starts the development environment using .env.development.local.
 
 _Similarly_, use `npm run bDev` to build the project using the development environment. This bundles the project in servable build files in the `./build` directory.
 
