@@ -1,7 +1,7 @@
-import {useState, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import UserContext from '../context/UserContext';
 
-const Login = (props) => {
+const Login = () => {
     const {onLogin} = useContext(UserContext);
     const initValues = {
         email: '',
