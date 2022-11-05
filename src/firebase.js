@@ -1,5 +1,5 @@
-import {initializeApp} from 'firebase/app';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 
 const config = {
