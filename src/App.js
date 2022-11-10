@@ -1,4 +1,8 @@
-// dependencies
+/*
+* App.js is the entry point of our components, besides index/js it servers as the jsx wrapper and context provider program wide.
+*/
+
+// libraries / packages
 import React, { useState, useEffect } 
 from 'react';
 
@@ -34,7 +38,7 @@ import {
 const App = () => {
 
   /*
-    Establish state variables. 
+    Establish state variables using useStorageState hook. 
     posts for the blog posts pulled from firebase.
     user for the email and isAuth status 
     and message to display user messages / updates
@@ -77,20 +81,15 @@ const App = () => {
       }
       setPosts(newStatePosts);
     });
+
   }, [setPosts]);
 
-  // a modest utility to convert the title into a usable url slug. 
-  /**
-   * 
-   * @todo consider migrating to utils file
-   */
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
       title.toLowerCase().split(" ").join("-")
     );
   };
 
-  
   const addNewPost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
     delete post.key;

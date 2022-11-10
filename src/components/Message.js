@@ -1,10 +1,12 @@
-import { react } from 'react';
+/* eslint-disable react/react-in-jsx-scope */
+import PropTypes from 'prop-types'
 
-const Message = ({ type }) => {
+const Message = (props) => {
+    const { type }  = props;
     const messages = {
         saved: 'Your post was Saved!',
         updated: 'Your post was Updated!',
-        deleted: 'Your post was Deleted!'
+        deleted: 'Your post was Deleted!',
     };
     return(
         <div className = {`App-message ${type}`}>
@@ -14,5 +16,10 @@ const Message = ({ type }) => {
         </div>
     );
 };
+
+// props types as good practice. Although the short circuit operator works on assignment / destructure from props works too.
+Message.propTypes = {
+    type: PropTypes.string,
+}
 
 export default Message;
