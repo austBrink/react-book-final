@@ -61,7 +61,7 @@ The biggest hurdle (which isn't that big) following along is the the react-route
 ### Issue Two: Firebase Modules verses Namespace 
 _Similarly_, the author uses Firebase web version 8 (namespacing) to call firebase methods. I had particular webpack troubles getting this to work and decided to follow the [documentation](https://firebase.google.com/docs/database/web/read-and-write) for web version 9 (modular). (Note, one must import these modules to use them).
 
-## A Word on React
+## A Word on React (if you want)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
