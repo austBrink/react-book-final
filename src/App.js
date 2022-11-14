@@ -96,8 +96,9 @@ const App = () => {
     );
   };
 
-  /* 
-    Add new post preps a slug, removes the key used in front end (not to confuse with firebase key). Envokes createRecord which is a util wrapper for firebase's push()
+  /** 
+  * @param
+  * Add new post preps a slug. Then delete the key used in front end (not to confuse with firebase key). Envokes createRecord which is a util wrapper for firebase's push() to create the parameter post to firebase database.
   */
 
   const addNewPost = (post) => {
@@ -108,9 +109,13 @@ const App = () => {
     })
     .catch((error) => {
       console.error(error);
-      
     });
   };
+
+  /**
+   * 
+   * @param {object} post
+   */
 
   const updatePost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
