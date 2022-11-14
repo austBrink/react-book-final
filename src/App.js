@@ -70,7 +70,7 @@ const App = () => {
     getOnValue(postsRef, (snapshot) => {
       
       const posts = snapshot.val();
-      // we'll want someplace to dump the trimmed database content to store in state. 
+
       const newStatePosts = [];
       for (let post in posts) {
         newStatePosts.push({
@@ -85,11 +85,20 @@ const App = () => {
 
   }, [setPosts]);
 
+
+  /*
+    Considered putting this in utils. Getting a slug for URL from the post title created by user...
+  */
+
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
       title.toLowerCase().split(" ").join("-")
     );
   };
+
+  /* 
+  
+  */
 
   const addNewPost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
