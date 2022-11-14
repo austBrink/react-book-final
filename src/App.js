@@ -97,7 +97,7 @@ const App = () => {
   };
 
   /* 
-  
+    Add new post preps a slug, removes the key used in front end (not to confuse with firebase key). Envokes createRecord which is a util wrapper for firebase's push()
   */
 
   const addNewPost = (post) => {
@@ -106,9 +106,10 @@ const App = () => {
     createRecord('posts', post).then(() => {
       setFlashMessage(`saved`);
     })
-    // .catch((error) => {
-    //   // The write failed...
-    // });
+    .catch((error) => {
+      console.error(error);
+      
+    });
   };
 
   const updatePost = (post) => {
