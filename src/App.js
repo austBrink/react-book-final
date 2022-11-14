@@ -47,6 +47,7 @@ const App = () => {
   const [ posts, setPosts ] = useStorageState(localStorage, 'state-posts', []);
   const [ user, setUser ] = useStorageState(localStorage, 'state-user', {});
   const [ message, setMessage ] = useState(null);
+  const [ messageContent, setMessageContent ] = useState('');
 
   /* 
     on first component loading (and when setPosts is called to update post list) 
@@ -136,7 +137,11 @@ const App = () => {
             isAuthenticated: true,
         })
     })
-    .catch(error => console.error(error))
+    .catch((error) => {
+      console.error(error);
+      setMessageContent(error);
+      setFlashMessage(`error`);
+    })
   };
 
   const onLogout = ( email, password ) => {
@@ -152,7 +157,7 @@ const App = () => {
     setMessage(message);
     setTimeout(() => {
       setMessage(null);
-    }, 1600);
+    }, 2000);
   };
 
   // const userStateWrapper = (user) => {
@@ -164,7 +169,12 @@ const App = () => {
       <UserContext.Provider value = {{ user, onLogin, onLogout }}>
         <div className="App">
           <Header/>
-          { message && <Message type = {message}/> }
+          { message && 
+              <Message 
+                type = {message}
+                message = {messageContent}
+              /> 
+          }
           <Routes>
           <Route
             exact

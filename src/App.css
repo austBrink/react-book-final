@@ -83,6 +83,10 @@
     background: #FF3F69;
   }
 
+  .App-message.error {
+    background: #FF3F69;
+  }
+
 
  .App form {
   padding: 1rem;
@@ -114,6 +118,7 @@
     font-size: 1rem;
     padding: .5rem 1rem;
   }
+
   .App form button[type="submit"]:hover {
     cursor: pointer;
   }
