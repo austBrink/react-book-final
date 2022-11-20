@@ -1,19 +1,11 @@
-// dependencies
-import React, { useState, useEffect } from 'react';
+/*
+* App.js is the entry point to our components, 
+besides index/js it servers as the jsx wrapper and context provider program wide.
+*/
 
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signOut
-} from 'firebase/auth';
-
-import {
-  ref,
-  onValue,
-  set,
-  push,
-  remove
-} from "firebase/database";
+// libraries / packages
+import React, { useState, useEffect } 
+from 'react';
 
 import { 
   BrowserRouter as Router,
@@ -21,7 +13,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { firebase, database } from './firebase';
+
+import { useStorageState } from "react-storage-hooks";
 
 // my stuff
 import './App.css';
@@ -33,21 +26,50 @@ import NotFound from './components/NotFound';
 import PostForm from './components/PostForm';
 import Message from './components/Message';
 import Login from './components/Login';
-import { useStorageState } from "react-storage-hooks";
+import {
+  login,
+  logout,
+  deleteRecord,
+  updateRecord,
+  createRecord,
+  getRef,
+  getOnValue,
+} from './firebase';
 
 const App = () => {
 
-  const [ posts, setPosts ] = useStorageState(localStorage, `state-posts`, []);
-  const [ user, setUser ] = useStorageState(localStorage, "state-user", {});
+  /*
+    Establish state variables using useStorageState hook. 
+    posts for the blog posts pulled from firebase.
+    user for the email and isAuth status 
+    and message to display user messages / updates
+  */
+  const [ posts, setPosts ] = useStorageState(localStorage, 'state-posts', []);
+  const [ user, setUser ] = useStorageState(localStorage, 'state-user', {});
   const [ message, setMessage ] = useState(null);
+  const [ messageContent, setMessageContent ] = useState('');
 
+  /* 
+    on first component loading (and when setPosts is called to update post list) 
+    we'll bring in firebase posts,
+    trim up the excess from the database by only saving certain key:values,
+    and saving to state.
+    We'll use onValue imported from firebase.js utilities. 
+    See firebase.js and useEffects dependency array.
+  */ 
   useEffect(() => {
-    const postsRef = ref(database, "posts");
-    onValue(postsRef, (snapshot) => {
+    const postsRef = getRef('posts');
+
+    /* 
+      getOnValue is just a wrapper to firebase/database onValue.
+      onValue takes a firebase database, a ref object (see getRef wrapper above) and a callback. 
+      The free snapshot parameter is apparently a reference to the current state (.val?) of the database ref.
+    */
+    getOnValue(postsRef, (snapshot) => {
+      
       const posts = snapshot.val();
-      console.log(posts);
+
       const newStatePosts = [];
-      // post is the firebase create key from when we used push()
       for (let post in posts) {
         newStatePosts.push({
           key: post,
@@ -56,33 +78,46 @@ const App = () => {
           content: posts[post].content,
         });
       }
-      console.log(newStatePosts);
       setPosts(newStatePosts);
     });
+
   }, [setPosts]);
 
+
+  /*
+    Considered putting this in utils. 
+    Getting a slug for URL from the post title created by user...
+  */
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
       title.toLowerCase().split(" ").join("-")
     );
   };
 
+  /** 
+  * Add new post preps a slug. 
+  * Then delete the key used in front end (not to confuse with firebase key).
+  * Envokes createRecord which is a util wrapper for firebase's push() 
+  * create the parameter post to firebase database.
+  */
   const addNewPost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
     delete post.key;
-    push(ref(database, "posts/"),
-      post
-    ).then(() => {
+    createRecord('posts', post).then(() => {
       setFlashMessage(`saved`);
     })
     .catch((error) => {
-      // The write failed...
+      console.error(error);
     });
   };
 
+  /**
+   * Updating the post. Like add, we get a slug from the title... 
+   * Envoke updateRecord from firebase utils. 
+   */
   const updatePost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
-    set(ref(database, 'posts/' + post.key), {
+    updateRecord('posts', post.key, {
       slug: post.slug,
       title: post.title,
       content: post.content
@@ -91,36 +126,45 @@ const App = () => {
       setFlashMessage(`updated`);
     })
     .catch((error) => {
-      // The write failed...
+      console.error(error);
     });
   };
 
+  /**
+   * Calling deleteRecord to remove this particular post.
+   */
   const deletePost = (post) => {
     if(window.confirm('Are you sure you want to delete this post?')){
-      remove(ref(database, 'posts/' + post.key))
+      deleteRecord('posts',post.key)
       .then(() => {
         setFlashMessage(`deleted`);
       })
       .catch((error) => {
-        // The write failed...
+        console.error(error);
       });
     }
   };
 
+  // Logging in the user with firebase util wrappers again. 
   const onLogin = ( email, password ) => {
-    signInWithEmailAndPassword(firebase, email, password)
+    login(email, password)
     .then((response) => {
         setUser({
             email: response.user['email'],
             isAuthenticated: true,
         })
     })
-    .catch(error => console.error(error))
+    .catch((error) => {
+      console.error(error);
+      setMessageContent(error);
+      setFlashMessage(`error`);
+    })
   };
 
+  // Logging the user out using firebase utils. See firebase.js
   const onLogout = ( email, password ) => {
-    signOut(firebase, email, password)
-    .then((response) => {
+    logout(email, password)
+    .then(() => {
       setUser({
         isAuthenticated: false
       })
@@ -131,19 +175,22 @@ const App = () => {
     setMessage(message);
     setTimeout(() => {
       setMessage(null);
-    }, 1600);
+    }, 2000);
   };
 
-  // const userStateWrapper = (user) => {
-  //   setUser({...user});
-  // }
-
+  // In app we'll set up a context provider for the user (important for permissions)
+  // onLogin and Logout are part of the context value to be used by the Login component.
   return (
     <Router>
       <UserContext.Provider value = {{ user, onLogin, onLogout }}>
         <div className="App">
           <Header/>
-          { message && <Message type = {message}/> }
+          { message && 
+              <Message 
+                type = {message}
+                message = {messageContent}
+              /> 
+          }
           <Routes>
           <Route
             exact

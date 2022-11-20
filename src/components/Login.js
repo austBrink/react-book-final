@@ -1,8 +1,8 @@
-import {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import UserContext from '../context/UserContext';
 
-const Login = (props) => {
-    const {onLogin} = useContext(UserContext);
+const Login = () => {
+    const { onLogin } = useContext(UserContext);
     const initValues = {
         email: '',
         password: '',
@@ -22,7 +22,6 @@ const Login = (props) => {
     }
 
     return(
-
         <form className="container" name="login" onSubmit={handleLogin}>
             <input 
                 type = 'email'
@@ -47,8 +46,7 @@ const Login = (props) => {
                     LOGIN
                 </button>
             </p>
-        </form>
-        
+        </form>     
     );
 }
 

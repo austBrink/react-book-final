@@ -66,3 +66,5 @@ _Similarly_, the author uses Firebase web version 8 (namespacing) to call fireba
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 While the initial react-app boiler-plate comes with testing and scripts I've paired things down to whats needed. If you want to learn more about react and it's defaults checkout their official [docs](https://reactjs.org/docs/getting-started.html).
+
+**See source files for more documentation via comments**

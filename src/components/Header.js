@@ -1,9 +1,8 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 const Header = () => {
-    /**@todo discuss confirmation that we want onLogout from the context. Why did we pass it onLogin? HE introduced this with no explanation... */
     const { user, onLogout } = useContext(UserContext); 
     return(
         <header className = 'App-header'>
