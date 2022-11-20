@@ -1,5 +1,6 @@
 /*
-* App.js is the entry point of our components, besides index/js it servers as the jsx wrapper and context provider program wide.
+* App.js is the entry point to our components, 
+besides index/js it servers as the jsx wrapper and context provider program wide.
 */
 
 // libraries / packages
@@ -43,7 +44,6 @@ const App = () => {
     user for the email and isAuth status 
     and message to display user messages / updates
   */
-
   const [ posts, setPosts ] = useStorageState(localStorage, 'state-posts', []);
   const [ user, setUser ] = useStorageState(localStorage, 'state-user', {});
   const [ message, setMessage ] = useState(null);
@@ -57,7 +57,6 @@ const App = () => {
     We'll use onValue imported from firebase.js utilities. 
     See firebase.js and useEffects dependency array.
   */ 
-
   useEffect(() => {
     const postsRef = getRef('posts');
 
@@ -66,7 +65,6 @@ const App = () => {
       onValue takes a firebase database, a ref object (see getRef wrapper above) and a callback. 
       The free snapshot parameter is apparently a reference to the current state (.val?) of the database ref.
     */
-
     getOnValue(postsRef, (snapshot) => {
       
       const posts = snapshot.val();
@@ -87,9 +85,9 @@ const App = () => {
 
 
   /*
-    Considered putting this in utils. Getting a slug for URL from the post title created by user...
+    Considered putting this in utils. 
+    Getting a slug for URL from the post title created by user...
   */
-
   const getNewSlugFromTitle = (title) => {
     return encodeURIComponent(
       title.toLowerCase().split(" ").join("-")
@@ -97,10 +95,11 @@ const App = () => {
   };
 
   /** 
-  * @param
-  * Add new post preps a slug. Then delete the key used in front end (not to confuse with firebase key). Envokes createRecord which is a util wrapper for firebase's push() to create the parameter post to firebase database.
+  * Add new post preps a slug. 
+  * Then delete the key used in front end (not to confuse with firebase key).
+  * Envokes createRecord which is a util wrapper for firebase's push() 
+  * create the parameter post to firebase database.
   */
-
   const addNewPost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
     delete post.key;
@@ -113,10 +112,9 @@ const App = () => {
   };
 
   /**
-   * 
-   * @param {object} post
+   * Updating the post. Like add, we get a slug from the title... 
+   * Envoke updateRecord from firebase utils. 
    */
-
   const updatePost = (post) => {
     post.slug = getNewSlugFromTitle(post.title);
     updateRecord('posts', post.key, {
@@ -127,23 +125,27 @@ const App = () => {
     .then(() => {
       setFlashMessage(`updated`);
     })
-    // .catch((error) => {
-    //   // The write failed...
-    // });
+    .catch((error) => {
+      console.error(error);
+    });
   };
 
+  /**
+   * Calling deleteRecord to remove this particular post.
+   */
   const deletePost = (post) => {
     if(window.confirm('Are you sure you want to delete this post?')){
       deleteRecord('posts',post.key)
       .then(() => {
         setFlashMessage(`deleted`);
       })
-      // .catch((error) => {
-      //   // The write failed...
-      // });
+      .catch((error) => {
+        console.error(error);
+      });
     }
   };
 
+  // Logging in the user with firebase util wrappers again. 
   const onLogin = ( email, password ) => {
     login(email, password)
     .then((response) => {
@@ -159,6 +161,7 @@ const App = () => {
     })
   };
 
+  // Logging the user out using firebase utils. See firebase.js
   const onLogout = ( email, password ) => {
     logout(email, password)
     .then(() => {
@@ -175,10 +178,8 @@ const App = () => {
     }, 2000);
   };
 
-  // const userStateWrapper = (user) => {
-  //   setUser({...user});
-  // }
-
+  // In app we'll set up a context provider for the user (important for permissions)
+  // onLogin and Logout are part of the context value to be used by the Login component.
   return (
     <Router>
       <UserContext.Provider value = {{ user, onLogin, onLogout }}>
